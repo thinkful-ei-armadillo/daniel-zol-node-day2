@@ -22,24 +22,47 @@ function sortFunction(list) {
 module.exports = sortFunction;
 
 app.get('/frequency', (req, res) => {
-  const s = req.query.s;
-  let ourArr = s.split('');
+  const {s} = req.query;
+
+  if (!s) {
+    return res.status(400).send('Please enter a string query for response!');
+  }
+
+  let ourObj = s
+    .toLowerCase()
+    .split('')
+    .reduce((acc,curr) => {
+      if (acc[curr]) {
+        acc[curr]++;
+      }
+      else{
+        acc[curr] = 1;
+      }
+      return acc;
+    }, {});
+
   let resultObj = {
     count: 0,
-    average: (this.a + this.b) / (this.count),
-    highest: '', 
+    average: 0,
+    highest: '',
   };
 
-  ourArr.forEach(letter => {
-    if (letter in resultObj) {
-      resultObj.letter = resultObj.letter + 1;
-    }
-    else {
-      resultObj.letter = 1;
-      resultObj.count = resultObj.count + 1;
+  let highestValue = 0;
+
+  Object.keys(ourObj).forEach(key => {
+    if (ourObj[key] > highestValue) {
+      highestValue = ourObj[key];
+      resultObj.highest = key;
     }
   });
 
-  
+  resultObj.count = Object.keys(ourObj).length;
+  resultObj.average = s.length / ourObj.count;
 
+  res.json(resultObj);
+
+});
+
+app.listen(8000, function () {
+  console.log('Ready');
 });
