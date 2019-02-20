@@ -1,11 +1,13 @@
 'use strict';
 const expect = require('chai').expect;
-const sort = require('../index');
+const sortFunction = require('../index');
 
 describe('sort testing', () => {
   it('should sort array correctly', () => {
-    const expectedAnswer = [2,5,6];
-    const actualAnswer = sort([6,2,5]);
-    expect(actualAnswer).to.deep.equal(expectedAnswer);
+    const exampleArr = [9, 0, 7, 1, 4];
+    const expectedAns = [0, 1, 4, 7, 9];
+    const actualAns = sortFunction(exampleArr);
+    expect(actualAns).to.deep.equal(expectedAns);
+    
   });
 });
